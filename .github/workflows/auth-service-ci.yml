@@ -1,0 +1,73 @@
+name: auth servces CI
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+      - production
+  push:
+    branches:
+      - master
+      - develop
+      - production
+
+jobs:
+  build-and-test:
+    name: build and test Project
+    runs-on: ubuntu-latest
+    # if: github.event_name == 'pull_request'
+    env:
+      DB_HOST: ${{ secrets.TEST_DB_HOST }}
+      DB_PORT: ${{ secrets.TEST_DB_PORT }}
+      DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+      DB_DATABASE: ${{ secrets.TEST_DB_DATABASE }}
+      REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+      JWKS_URI: ${{ secrets.JWKS_URI }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      REFRESH_TOKEN_ISSUER: 'Auth-service'
+      ACCESS_TOKEN_ISSUER: 'Auth-service'
+      REFRESH_TOKEN_EXPIRES_IN: '1y'
+      ACCESS_TOKEN_EXPIRES_IN: '1h'
+      BASE_URL: '/pizza-app/auth-service/api/v1'
+      PORT: 5501
+      NODE_ENV: 'prod'
+    steps:
+      - name: action checkout
+        uses: actions/checkout@v4
+      - name: install dependencies
+        run: npm ci
+      - name: Run eslint
+        run: npm run lint
+      # - name: run tests and coverage
+      #   run: npm run test
+      - name: Project Build
+        run: npm run build
+      - name: Sonar Cloud Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build-and-push-docker:
+    name: Build and Push Docker Image
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: parth731/mernspace-c-auth-service # parth731/mernstack_auth_service:build-2
+      IMAGE_TAG: build-${{ github.run_number }}
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/production') && github.event_name == 'push'
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: login docker hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: build docker image
+        run: docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --platform linux/amd64 -f docker/production/Dockerfile .
+      - name: push docker image
+        run: docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
