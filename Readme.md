@@ -5,5 +5,3 @@
 - npm run migration:generate -- src/database/migrations/migration1 -d src/database/data-source.ts
 
 - npm run migration:run -- -d src/database/data-source.ts
-
-added
