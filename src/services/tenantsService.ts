@@ -55,16 +55,6 @@ export const TenantGetAllService = async (
   const tenantRepository = AppDataSource.getRepository(Tenant);
 
   try {
-    // const tenants = await tenantRepository.find();
-    // if (!tenants) {
-    //   const customError = createHttpError(
-    //     500,
-    //     'failed to fetch the tenants data from the database',
-    //   );
-    //   throw customError;
-    // }
-    // return tenants;
-
     const queryBuilder = tenantRepository.createQueryBuilder('tenant');
 
     if (validatedQuery.q) {

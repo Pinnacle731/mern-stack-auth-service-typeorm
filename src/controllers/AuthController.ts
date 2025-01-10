@@ -1,14 +1,14 @@
 import { NextFunction, Response } from 'express';
 import {
-  loginResObjectType,
-  loginUserRequest,
-  logoutResObjectType,
-  logoutType,
-  refreshTokenResObjectType,
-  registerDataType,
-  registerResObjectType,
-  registerUserRequest,
-  selfResObjectType,
+  LoginResObjectType,
+  LoginUserRequest,
+  LogoutResObjectType,
+  LogoutType,
+  RefreshTokenResObjectType,
+  RegisterDataType,
+  RegisterResObjectType,
+  RegisterUserRequest,
+  SelfResObjectType,
 } from '../types/auth';
 import {
   CreateUserService,
@@ -38,7 +38,7 @@ import { AuthRequest, Roles } from '../types';
 import { validationResult } from 'express-validator';
 
 export const registerUser = async (
-  req: registerUserRequest,
+  req: RegisterUserRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
@@ -93,13 +93,12 @@ export const registerUser = async (
 
     logger.info('token has been created');
 
-    const resObj: registerDataType = {
+    const resObj: RegisterDataType = {
       ...user,
-      role: user.role as Roles,
       password: '',
     };
 
-    const registerResObject: registerResObjectType = {
+    const registerResObject: RegisterResObjectType = {
       code: 201,
       status: 'success',
       message: 'user created!!',
@@ -114,7 +113,7 @@ export const registerUser = async (
 };
 
 export const loginUser = async (
-  req: loginUserRequest,
+  req: LoginUserRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
@@ -176,7 +175,7 @@ export const loginUser = async (
       password: '',
     };
 
-    const loginResObject: loginResObjectType = {
+    const loginResObject: LoginResObjectType = {
       code: 200,
       status: 'success',
       message: 'user logged in successfully!!!',
@@ -193,8 +192,7 @@ export const loginUser = async (
 export const self = async (req: AuthRequest, res: Response): Promise<void> => {
   //req.auth.id
   const user = await findByIdService(Number(req.auth.sub));
-  // res.status(200).json({ ...user, password: undefined });
-  const selfResObject: selfResObjectType = {
+  const selfResObject: SelfResObjectType = {
     code: 200,
     status: 'success',
     message: 'fetch user data successfully',
@@ -258,13 +256,7 @@ export const refresh = async (
 
     setResponseCookies(res, accessToken, refreshToken);
 
-    // res.status(200).json({
-    //   message: 'refresh token and access token generated successfully',
-    //   data: { id: existUserName.id, userName: existUserName.userName },
-    //   error: false,
-    // });
-
-    const refreshTokenResObject: refreshTokenResObjectType = {
+    const refreshTokenResObject: RefreshTokenResObjectType = {
       code: 200,
       status: 'success',
       message: 'refresh token and access token generated successfully',
@@ -290,18 +282,13 @@ export const logout = async (
     logger.info('User has been logout', { id: req.auth.sub });
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
-    // res.status(200).json({
-    //   message: 'loggout successfully',
-    //   data: null,
-    //   error: false,
-    // });
 
-    const resObj: logoutType = {
+    const resObj: LogoutType = {
       id: Number(req.auth.id),
       role: req.auth.role as Roles,
     };
 
-    const logoutResObject: logoutResObjectType = {
+    const logoutResObject: LogoutResObjectType = {
       code: 200,
       status: 'success',
       message: 'loggout successfully!!!',

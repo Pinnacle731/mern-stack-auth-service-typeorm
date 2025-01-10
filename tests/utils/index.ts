@@ -1,5 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
 import { Tenant } from '../../src/database/entities/Tenant';
+import createHttpError from 'http-errors';
+import logger from '../../src/config/logger';
 
 export const truncateTable = async (connection: DataSource): Promise<void> => {
   const entities = connection.entityMetadatas;
@@ -24,8 +26,8 @@ export const isJwt = (token: string | null): boolean => {
       Buffer.from(part, 'base64').toString('utf-8');
     });
     return true;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (err) {
+  } catch (error) {
+    logger.error('Invalid token', { error });
     return false;
   }
 };

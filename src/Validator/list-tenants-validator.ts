@@ -5,16 +5,14 @@ export default checkSchema(
     q: {
       trim: true,
       customSanitizer: {
-        options: (value: unknown) => {
-          return value ? value : '';
-        },
+        options: (value: unknown) => value || '',
       },
     },
     currentPage: {
       customSanitizer: {
         options: (value) => {
           const parsedValue = Number(value);
-          return Number.isNaN(parsedValue) ? 1 : parsedValue;
+          return parsedValue || 1;
         },
       },
     },
@@ -22,7 +20,7 @@ export default checkSchema(
       customSanitizer: {
         options: (value) => {
           const parsedValue = Number(value);
-          return Number.isNaN(parsedValue) ? 6 : parsedValue;
+          return parsedValue || 6;
         },
       },
     },

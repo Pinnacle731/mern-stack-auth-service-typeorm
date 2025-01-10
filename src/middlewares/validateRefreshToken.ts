@@ -7,7 +7,7 @@ import { AppDataSource } from '../database/data-source';
 import { configEnv } from '../config/config';
 
 export default expressjwt({
-  secret: configEnv.refreshTokenSecret!,
+  secret: configEnv.refreshTokenSecret,
   algorithms: ['HS256'],
   // get refresh token
   getToken(req: Request) {

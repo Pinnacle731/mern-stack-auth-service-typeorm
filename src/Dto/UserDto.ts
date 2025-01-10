@@ -1,22 +1,22 @@
 import {
-  getAllUsersDtoType,
-  loginDtoType,
-  loginUserType,
-  logoutDtoType,
-  logoutType,
-  refreshTokenDtoType,
-  refreshTokenType,
-  registerDataType,
-  registerUserDtoType,
-  selfDataType,
-  selfDtoType,
-  updateUserDtoType,
-  updateUserType,
+  GetAllUsersDtoType,
+  LoginDtoType,
+  LoginUserType,
+  LogoutDtoType,
+  LogoutType,
+  RefreshTokenDtoType,
+  RefreshTokenType,
+  RegisterDataType,
+  RegisterUserDtoType,
+  SelfDataType,
+  SelfDtoType,
+  UpdateUserDtoType,
+  UpdateUserType,
 } from '../types/auth';
 
 export const registerUserDto = (
-  user: registerDataType,
-): { registerUserDto: registerUserDtoType } => {
+  user: RegisterDataType,
+): { registerUserDto: RegisterUserDtoType } => {
   return {
     registerUserDto: {
       id: user.id,
@@ -29,8 +29,8 @@ export const registerUserDto = (
 };
 
 export const loginUserDto = (
-  user: loginUserType,
-): { loginUserDto: loginDtoType } => {
+  user: LoginUserType,
+): { loginUserDto: LoginDtoType } => {
   return {
     loginUserDto: {
       id: user.id,
@@ -42,7 +42,7 @@ export const loginUserDto = (
   };
 };
 
-export const selfUserDto = (user: selfDataType): { selfDto: selfDtoType } => {
+export const selfUserDto = (user: SelfDataType): { selfDto: SelfDtoType } => {
   return {
     selfDto: {
       id: Number(user?.id),
@@ -56,8 +56,8 @@ export const selfUserDto = (user: selfDataType): { selfDto: selfDtoType } => {
 };
 
 export const refreshTokenDto = (
-  user: refreshTokenType,
-): { refreshTokenDto: refreshTokenDtoType } => {
+  user: RefreshTokenType,
+): { refreshTokenDto: RefreshTokenDtoType } => {
   return {
     refreshTokenDto: {
       id: user.id,
@@ -66,7 +66,7 @@ export const refreshTokenDto = (
   };
 };
 
-export const logoutDto = (user: logoutType): { logoutDto: logoutDtoType } => {
+export const logoutDto = (user: LogoutType): { logoutDto: LogoutDtoType } => {
   return {
     logoutDto: {
       id: Number(user.id),
@@ -76,9 +76,9 @@ export const logoutDto = (user: logoutType): { logoutDto: logoutDtoType } => {
 };
 
 export const updateUserDto = (
-  user: updateUserType,
+  user: UpdateUserType,
 ): {
-  updateUserDto: updateUserDtoType;
+  updateUserDto: UpdateUserDtoType;
 } => {
   return {
     updateUserDto: {
@@ -93,24 +93,24 @@ export const updateUserDto = (
 };
 
 export const getAllUsersDto = (
-  users: getAllUsersDtoType[],
-): { getAllUsersDto: getAllUsersDtoType[] } => {
+  users: GetAllUsersDtoType[],
+): { getAllUsersDto: GetAllUsersDtoType[] } => {
   return {
     getAllUsersDto: users,
   };
 };
 
 export const getUserByIdDto = (
-  user: getAllUsersDtoType,
-): { getUserByIdDto: getAllUsersDtoType } => {
+  user: GetAllUsersDtoType,
+): { getUserByIdDto: GetAllUsersDtoType } => {
   return {
     getUserByIdDto: user,
   };
 };
 
 export const deleteuserDto = (
-  user: getAllUsersDtoType,
-): { deleteuserDto: getAllUsersDtoType } => {
+  user: GetAllUsersDtoType,
+): { deleteuserDto: GetAllUsersDtoType } => {
   return {
     deleteuserDto: user,
   };

@@ -77,7 +77,7 @@ export const getAllTenants = async (
       code: 200,
       status: 'success',
       message: 'All tenants fetched!!',
-      data: tenantGetAllDto(tenants!),
+      data: tenantGetAllDto(tenants),
       error: false,
       currentPage: validatedQuery.currentPage as number,
       perPage: validatedQuery.perPage as number,

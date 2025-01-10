@@ -6,7 +6,7 @@ import { configEnv } from '../config/config';
 
 export default expressjwt({
   secret: jwksClient.expressJwtSecret({
-    jwksUri: configEnv.jwksUri!,
+    jwksUri: configEnv.jwksUri,
     cache: true,
     rateLimit: true,
   }) as unknown as GetVerificationKey,

@@ -19,8 +19,6 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.get(`${configEnv.baseUrl}/`, async (req: Request, res: Response) => {
-  //   const error = createHttpError(401, 'you can not access this route');
-  //   next(error);
   res.send('Welcome to the API!!!');
 });
 

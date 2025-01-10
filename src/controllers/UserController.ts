@@ -9,15 +9,15 @@ import {
   updateUserService,
 } from '../services/userService';
 import {
-  createUserRequest,
-  deleteUserResObject,
-  getAllUsersResObject,
-  getUserByIdResObject,
-  registerDataType,
-  registerResObjectType,
-  updateUserRequest,
-  updateUserResObjectType,
-  updateUserType,
+  CreateUserRequest,
+  DeleteUserResObject,
+  GetAllUsersResObject,
+  GetUserByIdResObject,
+  RegisterDataType,
+  RegisterResObjectType,
+  UpdateUserRequest,
+  UpdateUserResObjectType,
+  UpdateUserType,
   UserQueryParams,
 } from '../types/auth';
 import {
@@ -31,7 +31,7 @@ import { ApiSuccessHandler } from '../utils/ApiSuccess';
 import logger from '../config/logger';
 
 export const CreateUser = async (
-  req: createUserRequest,
+  req: CreateUserRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
@@ -56,12 +56,12 @@ export const CreateUser = async (
 
     logger.debug('creating a user in the database', req.body);
 
-    const resObj: registerDataType = {
+    const resObj: RegisterDataType = {
       ...user,
       password: '',
     };
 
-    const registerResObject: registerResObjectType = {
+    const registerResObject: RegisterResObjectType = {
       code: 201,
       status: 'success',
       message: 'user created!!',
@@ -76,7 +76,7 @@ export const CreateUser = async (
 };
 
 export const UpdateUser = async (
-  req: updateUserRequest,
+  req: UpdateUserRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
@@ -108,7 +108,7 @@ export const UpdateUser = async (
 
     logger.info('User has been updated', { id: userId });
 
-    const resObj: updateUserType = {
+    const resObj: UpdateUserType = {
       id: Number(userId),
       userName,
       firstName,
@@ -118,7 +118,7 @@ export const UpdateUser = async (
       tenantId,
     };
 
-    const updateUserResObject: updateUserResObjectType = {
+    const updateUserResObject: UpdateUserResObjectType = {
       code: 201,
       status: 'success',
       message: 'user updated!!',
@@ -137,7 +137,6 @@ export const getAllUsers = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  // const validatedQuery = matchedData(req, { onlyValidData: true });
   try {
     const validatedQuery = matchedData(req, { onlyValidData: true });
     const { users, count } = await getAllUsersService(
@@ -149,7 +148,7 @@ export const getAllUsers = async (
       throw error;
     }
 
-    const getAllUsersResObject: getAllUsersResObject = {
+    const getAllUsersResObject: GetAllUsersResObject = {
       code: 200,
       status: 'success',
       message: 'All users fetched successfully!!',
@@ -188,7 +187,7 @@ export const getUserById = async (
 
     logger.info('User has been fetched', { id: user.id });
 
-    const getUserByIdResObject: getUserByIdResObject = {
+    const getUserByIdResObject: GetUserByIdResObject = {
       code: 200,
       status: 'success',
       message: 'User fetched successfully!!',
@@ -225,11 +224,21 @@ export const deleteUser = async (
 
     logger.info('User has been fetched', { id: user.id });
 
-    const deleteUserResObject: deleteUserResObject = {
+    const deleteUserResObject: DeleteUserResObject = {
       code: 200,
       status: 'success',
       message: 'deleted user successfully!!',
-      data: deleteuserDto(user),
+      data: {
+        deleteUserDto: {
+          email: user.email,
+          id: user.id,
+          userName: user.userName,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+          tenant: user.tenant,
+        },
+      },
       error: false,
     };
     ApiSuccessHandler(res, deleteUserResObject);

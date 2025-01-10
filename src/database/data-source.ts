@@ -28,14 +28,3 @@ export const AppDataSource = new DataSource({
     rejectUnauthorized: true,
   },
 });
-
-// export const MongoDataSource = new DataSource({
-//   type: 'mongodb',
-//   url: Config.DB_MONGODB_URL,
-//   useUnifiedTopology: true,
-//   database: Config.DB_MONGODB_DB,
-//   entities: [User],
-//   synchronize:
-//     Config.NODE_ENV === 'test' || Config.NODE_ENV === 'dev' ? true : false, // Use only in development env
-//   logging: false,
-// });
