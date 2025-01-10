@@ -21,7 +21,6 @@ import {
   UserQueryParams,
 } from '../types/auth';
 import {
-  deleteuserDto,
   getAllUsersDto,
   getUserByIdDto,
   registerUserDto,

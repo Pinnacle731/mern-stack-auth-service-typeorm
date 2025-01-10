@@ -1,6 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
 import { Tenant } from '../../src/database/entities/Tenant';
-import createHttpError from 'http-errors';
 import logger from '../../src/config/logger';
 
 export const truncateTable = async (connection: DataSource): Promise<void> => {
