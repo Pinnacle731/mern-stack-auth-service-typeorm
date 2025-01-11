@@ -1,12 +1,11 @@
 import createHttpError from 'http-errors';
 import { User } from '../database/entities/User';
-// import { Roles, saltRounds } from '../constants';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { AppDataSource } from '../database/data-source';
 import { saltRounds } from '../constants';
 import {
   LimitedUserData,
-  registerDataType,
+  RegisterDataType,
   UserData,
   UserQueryParams,
 } from '../types/auth';
@@ -20,7 +19,7 @@ export const CreateUserService = async ({
   password,
   tenantId,
   role,
-}: UserData): Promise<registerDataType> => {
+}: UserData): Promise<RegisterDataType> => {
   const userRepository = AppDataSource.getRepository(User);
 
   // userName unique
@@ -103,18 +102,7 @@ export const findByIdService = async (id: number): Promise<User | null> => {
     .where('user.id = :id', { id }) // Match by user id
     .getOne();
 
-  // if (!user) {
-  //   throw createHttpError(404, 'User not found');
-  // }
-
   return user;
-  // } catch (error) {
-  //   if (error instanceof Error) {
-  //     throw createHttpError(500, error.message);
-  //   } else {
-  //     throw createHttpError(500, 'Failed to fetch the user from the database');
-  //   }
-  // }
 };
 
 export const updateUserService = async (
@@ -150,13 +138,6 @@ export const getAllUsersService = async (
   count: number;
 }> => {
   try {
-    // const userRepository = AppDataSource.getRepository(User);
-    // const users = await userRepository.find();
-    // if (!users) {
-    //   const error = createHttpError('404', 'users not exists');
-    //   throw error;
-    // }
-    // return users;
     const userRepository = AppDataSource.getRepository(User);
     const queryBuilder = userRepository.createQueryBuilder('user');
 

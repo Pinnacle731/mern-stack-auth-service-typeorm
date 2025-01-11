@@ -2,16 +2,22 @@ import { DataSource } from 'typeorm';
 import request from 'supertest';
 import createJWKSMock from 'mock-jwks';
 import { AppDataSource } from '../../src/database/data-source';
-import { createTenant } from '../utils';
+import { createTenant, createUser } from '../utils';
 import { Tenant } from '../../src/database/entities/Tenant';
 import { Roles } from '../../src/types/index';
 import { User } from '../../src/database/entities/User';
 import app from '../../src/app';
 
-describe('POST /users', () => {
+/***
+ * 401 not authorized error :-> when pass refreshToken as cookie then error generated
+ * 403 forbidden error :-> when pass role pass as customer and manager then error generated
+ */
+
+describe('create user in the database', () => {
   let connection: DataSource;
   let jwks: ReturnType<typeof createJWKSMock>;
   const baseUrl = `/pizza-app/auth-service/api/v1/users`;
+  const baseUrlRefresh = `/pizza-app/auth-service/api/v1/auth/refresh`;
 
   beforeAll(async () => {
     jwks = createJWKSMock('http://localhost:5501');
@@ -32,7 +38,7 @@ describe('POST /users', () => {
     await connection.destroy();
   });
 
-  describe('Given all fields', () => {
+  describe('POST /users', () => {
     it('should persist the user in the database', async () => {
       // Create tenant first
       const tenant = await createTenant(connection.getRepository(Tenant));
@@ -125,6 +131,27 @@ describe('POST /users', () => {
       const users = await userRepository.find();
 
       expect(users).toHaveLength(0);
+    });
+    it('should create refresh token in the database', async () => {
+      // Create tenant
+      const tenant = await createTenant(connection.getRepository(Tenant));
+      const user = await createUser(connection.getRepository(User), tenant);
+
+      const adminToken = jwks.token({
+        sub: String(user.id),
+        role: Roles.ADMIN,
+      });
+
+      // Add token to cookie
+      await request(app)
+        .post(baseUrlRefresh)
+        .set('Cookie', [`refrshToken=${adminToken}`])
+        .send();
+
+      const userRepository = connection.getRepository(User);
+      const users = await userRepository.find();
+      expect(users).toHaveLength(1);
+      expect(users[0].role).toBe(Roles.ADMIN);
     });
   });
 });

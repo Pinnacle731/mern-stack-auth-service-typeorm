@@ -47,7 +47,7 @@ export default checkSchema({
       errorMessage: 'Password must be at least 8 characters long',
     },
     matches: {
-      options: [/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_])/],
+      options: [/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])/],
       errorMessage:
         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
     },

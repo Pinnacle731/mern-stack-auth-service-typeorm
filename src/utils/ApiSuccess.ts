@@ -1,14 +1,14 @@
 import { Response } from 'express';
 import {
-  deleteUserResObject,
-  getAllUsersResObject,
-  getUserByIdResObject,
-  loginResObjectType,
-  logoutResObjectType,
-  refreshTokenResObjectType,
-  registerResObjectType,
-  selfResObjectType,
-  updateUserResObjectType,
+  DeleteUserResObject,
+  GetAllUsersResObject,
+  GetUserByIdResObject,
+  LoginResObjectType,
+  LogoutResObjectType,
+  RefreshTokenResObjectType,
+  RegisterResObjectType,
+  SelfResObjectType,
+  UpdateUserResObjectType,
 } from '../types/auth';
 import {
   ITenantDeleteResObject,
@@ -21,20 +21,20 @@ import {
 export const ApiSuccessHandler = (
   res: Response,
   responseObject:
-    | registerResObjectType
-    | loginResObjectType
-    | selfResObjectType
-    | refreshTokenResObjectType
-    | logoutResObjectType
+    | RegisterResObjectType
+    | LoginResObjectType
+    | SelfResObjectType
+    | RefreshTokenResObjectType
+    | LogoutResObjectType
     | ITenantCreateResObject
     | ITenantGetAllResObject
     | ITenantGetByIdResObject
     | ITenantDeleteResObject
     | ITenantUpdateResObject
-    | updateUserResObjectType
-    | getAllUsersResObject
-    | deleteUserResObject
-    | getUserByIdResObject,
+    | UpdateUserResObjectType
+    | GetAllUsersResObject
+    | DeleteUserResObject
+    | GetUserByIdResObject,
 ): void => {
   res.status(responseObject.code).json({
     status: responseObject.code,

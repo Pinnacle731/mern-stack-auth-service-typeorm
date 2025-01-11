@@ -21,8 +21,8 @@ export const canAccess = (allowedRoles: string[]) => {
     };
 
     if (
-      restrictedTargetRoles[roleFromToken] &&
-      restrictedTargetRoles[roleFromToken].includes(targetRole)
+      restrictedTargetRoles?.[roleFromToken] &&
+      restrictedTargetRoles?.[roleFromToken]?.includes(targetRole)
     ) {
       return next(
         createHttpError(

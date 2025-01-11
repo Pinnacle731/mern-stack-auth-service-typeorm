@@ -162,7 +162,7 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
 
       // $2b$10$P7XmW85oYjqCXTbALOZsM.bzXdo1qbuQIBldVJrvr9XBTALOYGDCC
       expect(users[0].password).toHaveLength(60);
-      expect(users[0].password).toMatch(/^\$2b\$\d+\$/); //check pattern of hash password `$2b$10$`
+      expect(users[0].password).toMatch(/^\$2[a|b]\$\d+\$/); //check pattern of hash password `$2b$10$`
     });
 
     it('should return 400 status code if email already exists', async () => {

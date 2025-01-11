@@ -1,6 +1,7 @@
 import { Roles } from './index';
 import { Request } from 'express';
 import { IGetAllTenantsDto } from './tenantsType';
+
 /** register */
 export interface UserData {
   userName: string;
@@ -12,15 +13,15 @@ export interface UserData {
   role: Roles;
 }
 
-export interface userCreateType extends UserData {
+export interface UserCreateType extends UserData {
   id: number;
 }
 
-export interface registerUserRequest extends Request {
+export interface RegisterUserRequest extends Request {
   body: UserData;
 }
 
-export interface registerDataType {
+export interface RegisterDataType {
   id: number;
   userName: string;
   email: string;
@@ -35,7 +36,7 @@ export interface registerDataType {
   };
 }
 
-export interface registerUserDtoType {
+export interface RegisterUserDtoType {
   id: number;
   userName: string;
   email: string;
@@ -44,18 +45,18 @@ export interface registerUserDtoType {
   tenantId?: number;
 }
 
-export interface registerResObjectType {
+export interface RegisterResObjectType {
   code: number;
   status: string;
   message: string;
   data: {
-    registerUserDto: registerUserDtoType;
+    registerUserDto: RegisterUserDtoType;
   };
   error: boolean;
 }
 
 /** login */
-export interface loginUserType {
+export interface LoginUserType {
   id: number;
   userName: string;
   email: string;
@@ -65,11 +66,11 @@ export interface loginUserType {
   password: string;
 }
 
-export interface loginUserRequest extends Request {
-  body: loginUserType;
+export interface LoginUserRequest extends Request {
+  body: LoginUserType;
 }
 
-export interface loginDtoType {
+export interface LoginDtoType {
   id: number;
   fullName: string;
   userName: string;
@@ -77,18 +78,18 @@ export interface loginDtoType {
   role: string;
 }
 
-export interface loginResObjectType {
+export interface LoginResObjectType {
   code: number;
   status: string;
   message: string;
   data: {
-    loginUserDto: loginDtoType;
+    loginUserDto: LoginDtoType;
   };
   error: boolean;
 }
 
 /** self */
-export interface selfDataType {
+export interface SelfDataType {
   id: number;
   userName: string;
   email: string;
@@ -99,7 +100,7 @@ export interface selfDataType {
   tenant: IGetAllTenantsDto | null;
 }
 
-export interface selfDtoType {
+export interface SelfDtoType {
   id: number;
   fullName: string;
   userName: string;
@@ -108,19 +109,18 @@ export interface selfDtoType {
   tenant: IGetAllTenantsDto | null;
 }
 
-export interface selfResObjectType {
+export interface SelfResObjectType {
   code: number;
   status: string;
   message: string;
   data: {
-    selfDto: selfDtoType;
+    selfDto: SelfDtoType;
   };
   error: boolean;
 }
 
 // refresh token
-
-export interface refreshTokenType {
+export interface RefreshTokenType {
   id: number;
   userName: string;
   email: string;
@@ -130,45 +130,44 @@ export interface refreshTokenType {
   password: string;
 }
 
-export interface refreshTokenDtoType {
+export interface RefreshTokenDtoType {
   id: number;
   userName: string;
 }
 
-export interface refreshTokenResObjectType {
+export interface RefreshTokenResObjectType {
   code: number;
   status: string;
   message: string;
   data: {
-    refreshTokenDto: refreshTokenDtoType;
+    refreshTokenDto: RefreshTokenDtoType;
   };
   error: boolean;
 }
 
 // logout user
-
-export interface logoutType {
+export interface LogoutType {
   id: number;
   role: Roles;
 }
 
-export interface logoutDtoType {
+export interface LogoutDtoType {
   id: number;
   role: Roles;
 }
 
-export interface logoutResObjectType {
+export interface LogoutResObjectType {
   code: number;
   status: string;
   message: string;
   data: {
-    logoutDto: logoutDtoType;
+    logoutDto: LogoutDtoType;
   };
   error: boolean;
 }
 
-//create user
-export interface createUserRequest extends Request {
+// create user
+export interface CreateUserRequest extends Request {
   body: UserData;
 }
 
@@ -182,11 +181,11 @@ export interface LimitedUserData {
   tenantId: number;
 }
 
-export interface updateUserRequest extends Request {
+export interface UpdateUserRequest extends Request {
   body: LimitedUserData;
 }
 
-export interface updateUserType {
+export interface UpdateUserType {
   id: number;
   userName: string;
   firstName: string;
@@ -196,7 +195,7 @@ export interface updateUserType {
   tenantId: number;
 }
 
-export interface updateUserDtoType {
+export interface UpdateUserDtoType {
   id: number;
   userName: string;
   fullName: string;
@@ -205,18 +204,17 @@ export interface updateUserDtoType {
   tenantId: number;
 }
 
-export interface updateUserResObjectType {
+export interface UpdateUserResObjectType {
   code: number;
   status: string;
   message: string;
   data: {
-    updateUserDto: updateUserDtoType;
+    updateUserDto: UpdateUserDtoType;
   };
   error: boolean;
 }
 
 // get all users
-
 export interface UserQueryParams {
   perPage: number;
   currentPage: number;
@@ -224,7 +222,7 @@ export interface UserQueryParams {
   role: string;
 }
 
-export interface getAllUsersDtoType {
+export interface GetAllUsersDtoType {
   id: number;
   userName: string;
   firstName: string;
@@ -234,12 +232,12 @@ export interface getAllUsersDtoType {
   tenant: IGetAllTenantsDto | null;
 }
 
-export interface getAllUsersResObject {
+export interface GetAllUsersResObject {
   code: number;
   status: string;
   message: string;
   data: {
-    getAllUsersDto: getAllUsersDtoType[];
+    getAllUsersDto: GetAllUsersDtoType[];
   };
   error: boolean;
   total: number;
@@ -248,23 +246,23 @@ export interface getAllUsersResObject {
 }
 
 // get user by id
-export interface getUserByIdResObject {
+export interface GetUserByIdResObject {
   code: number;
   status: string;
   message: string;
   data: {
-    getUserByIdDto: getAllUsersDtoType;
+    getUserByIdDto: GetAllUsersDtoType;
   };
   error: boolean;
 }
 
 // delete user
-export interface deleteUserResObject {
+export interface DeleteUserResObject {
   code: number;
   status: string;
   message: string;
   data: {
-    deleteuserDto: getAllUsersDtoType;
+    deleteUserDto: GetAllUsersDtoType;
   };
   error: boolean;
 }

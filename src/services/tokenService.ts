@@ -5,7 +5,7 @@ import { isLeapYear } from '../utils/index';
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../database/data-source';
 import { configEnv } from '../config/config';
-import { userCreateType } from '../types/auth';
+import { UserCreateType } from '../types/auth';
 
 export const generateAccessToken = (payload: JwtPayload): string => {
   let privateKey: string;
@@ -33,7 +33,7 @@ export const generateAccessToken = (payload: JwtPayload): string => {
 };
 
 export const generateRefreshToken = (payload: JwtPayload): string => {
-  const refreshToken = sign(payload, configEnv.refreshTokenSecret!, {
+  const refreshToken = sign(payload, configEnv.refreshTokenSecret, {
     algorithm: 'HS256',
     expiresIn: String(configEnv.refreshTokenExpiresIn),
     issuer: String(configEnv.refreshTokenIssuer),
@@ -43,7 +43,7 @@ export const generateRefreshToken = (payload: JwtPayload): string => {
 };
 
 export const persistRefreshToken = async (
-  user: userCreateType,
+  user: UserCreateType,
 ): Promise<RefreshToken> => {
   const MS_IN_YEAR = isLeapYear(new Date().getFullYear());
   const refreshTokenRepository: Repository<RefreshToken> =

@@ -1,5 +1,5 @@
 import { checkSchema } from 'express-validator';
-import { updateUserRequest } from '../types/auth';
+import { UpdateUserRequest } from '../types/auth';
 import { Roles } from '../types';
 
 export default checkSchema({
@@ -96,7 +96,7 @@ export default checkSchema({
     trim: true,
     custom: {
       options: async (value: string, { req }) => {
-        const role = (req as updateUserRequest).body.role;
+        const role = (req as UpdateUserRequest).body.role;
         if (role === 'admin') {
           return true;
         } else {

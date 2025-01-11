@@ -10,16 +10,6 @@ export interface tenantRequest extends Request {
   body: ICreateTenants;
 }
 
-// export interface ICreateTenantsDataType {
-//   id: number;
-//   userName: string;
-//   email: string;
-//   firstName: string;
-//   lastName: string;
-//   role: Roles;
-//   password: string;
-// }
-
 export interface ITenantCreateDto {
   id: number;
   name: string;
