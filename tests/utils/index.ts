@@ -1,6 +1,8 @@
 import { DataSource, Repository } from 'typeorm';
 import { Tenant } from '../../src/database/entities/Tenant';
 import logger from '../../src/config/logger';
+import { User } from '../../src/database/entities/User';
+import { Roles } from '../../src/types';
 
 export const truncateTable = async (connection: DataSource): Promise<void> => {
   const entities = connection.entityMetadatas;
@@ -38,4 +40,18 @@ export const createTenant = async (repository: Repository<Tenant>) => {
     address: 'Test address',
   });
   return tenant;
+};
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const createUser = async (repository: Repository<User>) => {
+  const user = await repository.save({
+    tenant: { id: 1 },
+    userName: 'parth731',
+    firstName: 'Parth',
+    lastName: 'Dangroshiya',
+    email: 'BxPnM@example.com',
+    id: 1,
+    password: 'Parth@123',
+    role: 'admin' as Roles.ADMIN,
+  });
+  return user;
 };
