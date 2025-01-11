@@ -51,7 +51,7 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: parth731/mernspace-c-auth-service # parth731/mernstack_auth_service:build-2
+      IMAGE_NAME: pinnacle731/mern-stack-auth-service # pinnacle731/mern-stack-auth-service:build-2
       IMAGE_TAG: build-${{ github.run_number }}
     if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/production') && github.event_name == 'push'
     steps:

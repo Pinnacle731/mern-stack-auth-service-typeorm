@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { DataSource, Repository } from 'typeorm';
 import { Tenant } from '../../src/database/entities/Tenant';
 import logger from '../../src/config/logger';
@@ -33,7 +34,6 @@ export const isJwt = (token: string | null): boolean => {
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createTenant = async (repository: Repository<Tenant>) => {
   const tenant = await repository.save({
     name: 'Test tenant',
@@ -41,17 +41,19 @@ export const createTenant = async (repository: Repository<Tenant>) => {
   });
   return tenant;
 };
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createUser = async (repository: Repository<User>) => {
+
+export const createUser = async (
+  repository: Repository<User>,
+  tenant: Tenant,
+) => {
   const user = await repository.save({
-    tenant: { id: 1 },
+    tenant: { id: tenant.id },
     userName: 'parth731',
     firstName: 'Parth',
     lastName: 'Dangroshiya',
     email: 'BxPnM@example.com',
-    id: 1,
     password: 'Parth@123',
-    role: 'admin' as Roles.ADMIN,
+    role: Roles.ADMIN,
   });
   return user;
 };

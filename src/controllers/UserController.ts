@@ -118,7 +118,7 @@ export const UpdateUser = async (
     };
 
     const updateUserResObject: UpdateUserResObjectType = {
-      code: 201,
+      code: 200,
       status: 'success',
       message: 'user updated!!',
       data: updateUserDto(resObj),

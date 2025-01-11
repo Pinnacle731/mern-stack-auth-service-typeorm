@@ -8,7 +8,12 @@ import { Roles } from '../../src/types/index';
 import { User } from '../../src/database/entities/User';
 import app from '../../src/app';
 
-describe('POST /users', () => {
+/***
+ * 401 not authorized error :-> when pass refreshToken as cookie then error generated
+ * 403 forbidden error :-> when pass role pass as customer and manager then error generated
+ */
+
+describe('create user in the database', () => {
   let connection: DataSource;
   let jwks: ReturnType<typeof createJWKSMock>;
   const baseUrl = `/pizza-app/auth-service/api/v1/users`;
@@ -33,7 +38,7 @@ describe('POST /users', () => {
     await connection.destroy();
   });
 
-  describe('Given all fields', () => {
+  describe('POST /users', () => {
     it('should persist the user in the database', async () => {
       // Create tenant first
       const tenant = await createTenant(connection.getRepository(Tenant));
@@ -127,28 +132,15 @@ describe('POST /users', () => {
 
       expect(users).toHaveLength(0);
     });
-    it('should create a admin user', async () => {
+    it('should create refresh token in the database', async () => {
       // Create tenant
       const tenant = await createTenant(connection.getRepository(Tenant));
-      const user = await createUser(connection.getRepository(User));
-      console.log(tenant);
-      console.log(user);
+      const user = await createUser(connection.getRepository(User), tenant);
 
       const adminToken = jwks.token({
         sub: String(user.id),
         role: Roles.ADMIN,
       });
-
-      // Register user
-      const userData = {
-        userName: 'parth731',
-        firstName: 'Parth',
-        lastName: 'Dangroshiya',
-        email: 'BxPnM@example.com',
-        password: 'Parth@123',
-        tenantId: tenant.id,
-        role: Roles.MANAGER,
-      };
 
       // Add token to cookie
       await request(app)

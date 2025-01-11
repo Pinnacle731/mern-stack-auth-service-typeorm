@@ -6,7 +6,7 @@ import { Roles } from '../../src/constants';
 import { AppDataSource } from '../../src/database/data-source';
 import { Tenant } from '../../src/database/entities/Tenant';
 
-describe('POST /tenants', () => {
+describe('create tenants in the database', () => {
   let connection: DataSource;
   let jwks: ReturnType<typeof createJWKSMock>;
   let adminToken: string;
@@ -36,7 +36,7 @@ describe('POST /tenants', () => {
     jwks.stop();
   });
 
-  describe('Given all fields', () => {
+  describe('POST /tenants', () => {
     it('should return a 201 status code', async () => {
       const tenantData = {
         name: 'Tenant name',
