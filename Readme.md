@@ -7,3 +7,5 @@
 - npm run migration:run -- -d src/database/data-source.ts
 
 - our awsome service
+
+- new added
