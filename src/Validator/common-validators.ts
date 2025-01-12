@@ -56,7 +56,7 @@ export const passwordValidator: Schema = {
       errorMessage: 'Password must be at least 8 characters long',
     },
     matches: {
-      options: [/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])/],
+      options: [/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/],
       errorMessage:
         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
     },
