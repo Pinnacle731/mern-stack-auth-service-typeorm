@@ -42,6 +42,11 @@ jobs:
         run: npm run test
       - name: Project Build
         run: npm run build
+  sonar-cloud-scan:
+    name: Sonar Cloud Scan and test
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
       - name: Sonar Cloud Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
@@ -50,7 +55,7 @@ jobs:
 
   build-and-push-docker:
     name: Build and Push Docker Image
-    needs: build-and-test
+    needs: sonar-cloud-scan
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: pinnacle731/mern-stack-auth-service # pinnacle731/mern-stack-auth-service:build-2
