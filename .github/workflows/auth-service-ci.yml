@@ -53,7 +53,7 @@ jobs:
 
   build-and-push-docker:
     name: Build and Push Docker Image
-    needs: build-and-test
+    needs: sonar-cloud-scan
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: pinnacle731/mern-stack-auth-service # pinnacle731/mern-stack-auth-service:build-2
