@@ -47,7 +47,7 @@ jobs:
     steps:
       - name: Sonar Cloud Scan
         uses: SonarSource/sonarqube-scan-action@v4
-        env:
+        with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
