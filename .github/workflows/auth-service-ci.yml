@@ -40,6 +40,11 @@ jobs:
         run: npm run test
       - name: Project Build
         run: npm run build
+  sonar-cloud-scan:
+    name: Sonar Cloud Scan and test
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
       - name: Sonar Cloud Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
@@ -53,7 +58,7 @@ jobs:
     env:
       IMAGE_NAME: pinnacle731/mern-stack-auth-service # pinnacle731/mern-stack-auth-service:build-2
       IMAGE_TAG: build-${{ github.run_number }}
-    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/production') && github.event_name == 'push'
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/developer' || github.ref == 'refs/heads/Productions') && github.event_name == 'push'
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
