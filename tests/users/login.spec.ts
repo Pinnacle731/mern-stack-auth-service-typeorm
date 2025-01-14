@@ -197,6 +197,6 @@ describe('POST /pizza-app/auth-service/api/v1/auth/login', () => {
 
     // Assert
     expect(responsePassword.statusCode).toBe(400);
-    expect(responseUsername.statusCode).toBe(400);
+    expect(responseUsername.statusCode).toBe(404);
   });
 });

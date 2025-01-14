@@ -29,6 +29,7 @@ interface Config {
   privatekey: string;
 
   databaseUrl: string;
+  rdsSSL: string;
 }
 
 export const configEnv: Config = {
@@ -55,6 +56,9 @@ export const configEnv: Config = {
   accessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN ?? '1h',
   jwksUri:
     process.env.JWKS_URI ?? 'http://localhost:5501/.well-known/jwks.json',
+
+  // others
   privatekey: process.env.PRIVATE_KEY ?? '',
   databaseUrl: process.env.DB_DATABASE_URL ?? '',
+  rdsSSL: process.env.RDS_SSL ?? '',
 };

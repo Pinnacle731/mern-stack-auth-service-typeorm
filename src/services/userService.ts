@@ -82,10 +82,7 @@ export const findByEmailWithPasswordService = async (
     },
   });
   if (!user) {
-    const error = createHttpError(
-      400,
-      'Username or Email or Password does not match!',
-    );
+    const error = createHttpError(404, 'user does not exist!');
     throw error;
   }
   return user;
