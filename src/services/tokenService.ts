@@ -4,20 +4,17 @@ import { RefreshToken } from '../database/entities/RefreshToken';
 import { getRefreshTokenRepository, isLeapYear } from '../utils/common';
 import { configEnv } from '../config/config';
 import { UserCreateType } from '../types/auth';
-import path from 'path';
-import fs from 'fs';
 
 export const generateAccessToken = (payload: JwtPayload): string => {
   let privateKey: string;
 
-  try {
-    const privateKeyPath = path.join(__dirname, '../../certs/private.pem');
-    privateKey = fs.readFileSync(privateKeyPath, 'utf8');
+  if (!configEnv.privatekey) {
+    const error = createHttpError(500, 'Private key not found');
+    throw error;
+  }
 
-    if (!privateKey) {
-      const error = createHttpError(500, 'Private key not found');
-      throw error;
-    }
+  try {
+    privateKey = configEnv.privatekey;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
