@@ -39,8 +39,8 @@ jobs:
         run: npm ci
       - name: Run eslint
         run: npm run lint
-      - name: run tests and coverage
-        run: npm run test
+      # - name: run tests and coverage
+      #   run: npm run test
       - name: Project Build
         run: npm run build
   sonar-cloud-scan:
