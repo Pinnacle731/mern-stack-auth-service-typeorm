@@ -2,6 +2,8 @@ import 'reflect-metadata';
 // import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 import { configEnv } from '../config/config';
+import fs from 'fs';
+import path from 'path';
 
 export const AppDataSource = new DataSource({
   type: 'postgres', // PostgreSQL setup
@@ -18,7 +20,11 @@ export const AppDataSource = new DataSource({
   migrations: ['src/database/migrations/*.{ts,js}'],
   subscribers: [],
   ssl: {
-    ca: configEnv.rdsSSL,
+    // ca: configEnv.rdsSSL,
+    ca: fs.readFileSync(
+      path.join(__dirname, '../rds-ssl/ap-south-1-bundle.pem'),
+      'utf-8',
+    ),
     rejectUnauthorized: true,
   },
 });
