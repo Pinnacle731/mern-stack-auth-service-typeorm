@@ -3,10 +3,10 @@ import request from 'supertest';
 import app from '../../src/app';
 import { DataSource } from 'typeorm';
 import { isJwt } from '../utils';
-import { AppDataSource } from '../../src/database/data-source';
 import { User } from '../../src/database/entities/User';
 import { RefreshToken } from '../../src/database/entities/RefreshToken';
 import { Roles } from '../../src/types';
+import { AppDataSourceInitialize } from '../../src/utils/common';
 // import { truncateTable } from '../utils';
 
 describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
@@ -25,7 +25,8 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
   };
 
   beforeAll(async () => {
-    connection = await AppDataSource.initialize();
+    // connection = await AppDataSource.initialize();
+    connection = await AppDataSourceInitialize();
   });
 
   beforeEach(async () => {

@@ -3,9 +3,9 @@ import request from 'supertest';
 import app from '../../src/app';
 import createJWKSMock from 'mock-jwks';
 import { Roles } from '../../src/constants';
-import { AppDataSource } from '../../src/database/data-source';
 import { Tenant } from '../../src/database/entities/Tenant';
 import { createTenant } from '../utils';
+import { AppDataSourceInitialize } from '../../src/utils/common';
 
 describe('create tenants in the database', () => {
   let connection: DataSource;
@@ -14,8 +14,9 @@ describe('create tenants in the database', () => {
   const baseUrl = '/pizza-app/auth-service/api/v1/tenants';
 
   beforeAll(async () => {
-    connection = await AppDataSource.initialize();
     jwks = createJWKSMock('http://localhost:5501');
+    // connection = await AppDataSource.initialize();
+    connection = await AppDataSourceInitialize();
   });
 
   beforeEach(async () => {

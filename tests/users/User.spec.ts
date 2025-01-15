@@ -1,12 +1,12 @@
 import { DataSource } from 'typeorm';
 import request from 'supertest';
 import createJWKSMock from 'mock-jwks';
-import { AppDataSource } from '../../src/database/data-source';
 import { createTenant, createUser } from '../utils';
 import { Tenant } from '../../src/database/entities/Tenant';
 import { Roles } from '../../src/types/index';
 import { User } from '../../src/database/entities/User';
 import app from '../../src/app';
+import { AppDataSourceInitialize } from '../../src/utils/common';
 
 /***
  * 401 not authorized error :-> when pass refreshToken as cookie then error generated
@@ -21,7 +21,8 @@ describe('create user in the database', () => {
 
   beforeAll(async () => {
     jwks = createJWKSMock('http://localhost:5501');
-    connection = await AppDataSource.initialize();
+    // connection = await AppDataSource.initialize();
+    connection = await AppDataSourceInitialize();
   });
 
   beforeEach(async () => {

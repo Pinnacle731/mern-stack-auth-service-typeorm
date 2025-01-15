@@ -43,3 +43,16 @@ synchronize:true
  entities: ['src/database/entities/*.{ts,js}'], // Add all your entities here
   migrations: ['src/database/migrations/*.{ts,js}'],
 ```
+
+```javascript
+ let privateKey: string;
+
+  if (!configEnv.privatekey) {
+    const error = createHttpError(500, 'Private key not found');
+    throw error;
+  }
+
+  try {
+    privateKey = configEnv.privatekey;
+  }
+```

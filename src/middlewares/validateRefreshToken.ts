@@ -1,10 +1,9 @@
 import { expressjwt } from 'express-jwt';
 import { Request } from 'express';
 import { AuthCookies, IRefreshTokenPayload } from '../types';
-import { RefreshToken } from '../database/entities/RefreshToken';
 import logger from '../config/logger';
-import { AppDataSource } from '../database/data-source';
 import { configEnv } from '../config/config';
+import { getRefreshTokenRepository } from '../utils/common';
 
 export default expressjwt({
   secret: configEnv.refreshTokenSecret,
@@ -33,8 +32,9 @@ export default expressjwt({
         }
         */
     try {
-      const refreshTokenRepo = AppDataSource.getRepository(RefreshToken);
-      const refreshToken = await refreshTokenRepo.findOne({
+      // const refreshTokenRepository = AppDataSource.getRepository(RefreshToken);
+      const refreshTokenRepository = await getRefreshTokenRepository();
+      const refreshToken = await refreshTokenRepository.findOne({
         where: {
           id: Number((token?.payload as IRefreshTokenPayload).id),
           user: { id: Number(token?.payload.sub) },

@@ -30,6 +30,12 @@ interface Config {
 
   databaseUrl: string;
   rdsSSL: string;
+
+  //aws
+  awsRegion: string;
+  awsAccessKeyId: string;
+  awsSecretAccessKey: string;
+  awsS3BucketName: string;
 }
 
 export const configEnv: Config = {
@@ -61,4 +67,10 @@ export const configEnv: Config = {
   privatekey: process.env.PRIVATE_KEY ?? '',
   databaseUrl: process.env.DB_DATABASE_URL ?? '',
   rdsSSL: process.env.RDS_SSL ?? '',
+
+  //aws
+  awsRegion: process.env.AWS_REGION ?? 'ap-south-1',
+  awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+  awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+  awsS3BucketName: 'mern-stack-service-bucket',
 };

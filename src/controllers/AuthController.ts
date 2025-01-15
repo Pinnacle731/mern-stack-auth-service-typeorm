@@ -166,7 +166,7 @@ export const loginUser = async (
       id: String(newRefreshToken.id),
     });
 
-    setResponseCookies(res, accessToken, refreshToken);
+    await setResponseCookies(res, accessToken, refreshToken);
 
     logger.info('user has been logged in', { id: existUser?.id });
 
