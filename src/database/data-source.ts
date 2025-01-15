@@ -22,7 +22,7 @@ export const AppDataSource = new DataSource({
   ssl: {
     // ca: configEnv.rdsSSL,
     ca: fs.readFileSync(
-      path.join(__dirname, '../rds-ssl/ap-south-1-bundle.pem'),
+      path.join(__dirname, `../rds-ssl/global-bundle.pem`),
       'utf-8',
     ),
     rejectUnauthorized: true,
