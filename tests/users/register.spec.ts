@@ -45,6 +45,8 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
     it('should return the 201 status code', async () => {
       const userData = UserInfo();
       const response = await request(app).post(baseUrl).send(userData);
+      console.log(response.body);
+      console.log(response.statusCode);
       expect(response.statusCode).toBe(201);
       expect(response.body.message).toBe('user created!!');
     });
