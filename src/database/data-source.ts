@@ -23,7 +23,7 @@ export const AppDataSource = async (): Promise<DataSource | undefined> => {
       username: configEnv.dbUsername,
       password: configEnv.dbPassword,
       database: configEnv.dbDatabase,
-      synchronize: true,
+      synchronize: false,
       logging: false,
       entities: ['src/database/entities/*.{ts,js}'],
       migrations: ['src/database/migrations/*.{ts,js}'],
@@ -31,11 +31,11 @@ export const AppDataSource = async (): Promise<DataSource | undefined> => {
         configEnv.nodeEnv === 'test'
           ? {
               ca: configEnv.rdsSSL.replace(/\\n/g, '\n'),
-              rejectUnauthorized: false,
+              rejectUnauthorized: true,
             }
           : {
               ca: rdsSSL,
-              rejectUnauthorized: false,
+              rejectUnauthorized: true,
             },
     });
 

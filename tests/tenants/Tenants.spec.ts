@@ -155,8 +155,8 @@ describe('create tenants in the database', () => {
       const tenant = await createTenant(connection.getRepository(Tenant));
 
       const updatedData = {
-        name: 'Test tenant 1',
-        address: 'Test address 1',
+        name: 'Test tenant',
+        address: 'Test address',
       };
 
       const response = await request(app)
