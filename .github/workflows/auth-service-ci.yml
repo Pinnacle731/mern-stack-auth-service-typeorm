@@ -7,62 +7,65 @@ on:
   push:
     branches:
       - Productions
-      - parth-dev
 jobs:
-  # build-and-test:
-  #   name: build and test Project
-  #   runs-on: ubuntu-latest
-  #   # if: github.event_name == 'pull_request'
-  #   env:
-  #     DB_HOST: ${{ secrets.TEST_DB_HOST }}
-  #     DB_PORT: ${{ secrets.TEST_DB_PORT }}
-  #     DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
-  #     DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-  #     DB_DATABASE: ${{ secrets.TEST_DB_DATABASE }}
-  #     REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
-  #     JWKS_URI: ${{ secrets.JWKS_URI }}
-  #     PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-  #     JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  #     AWS_REGION: ${{secrets.AWS_REGION}}
-  #     AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-  #     AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  #     REFRESH_TOKEN_ISSUER: 'Auth-service'
-  #     ACCESS_TOKEN_ISSUER: 'Auth-service'
-  #     REFRESH_TOKEN_EXPIRES_IN: '1y'
-  #     ACCESS_TOKEN_EXPIRES_IN: '1h'
-  #     BASE_URL: '/pizza-app/auth-service/api/v1'
-  #     PORT: 5501
-  #     NODE_ENV: 'test'
-  #   steps:
-  #     - name: action checkout
-  #       uses: actions/checkout@v4
-  #     - name: install dependencies
-  #       run: npm ci
-  #     - name: Run eslint
-  #       run: npm run lint
-  #     # - name: run tests and coverage
-  #     #   run: npm run test
-  #     - name: Project Build
-  #       run: npm run build
-  # sonar-cloud-scan:
-  #   name: Sonar Cloud Scan and test
-  #   needs: build-and-test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Sonar Cloud Scan
-  #       uses: SonarSource/sonarqube-scan-action@v4
-  #       with:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  build-and-test:
+    name: build and test Project
+    runs-on: ubuntu-latest
+    # if: github.event_name == 'pull_request'
+    env:
+      DB_HOST: ${{ secrets.TEST_DB_HOST }}
+      DB_PORT: ${{ secrets.TEST_DB_PORT }}
+      DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+      DB_DATABASE: ${{ secrets.TEST_DB_DATABASE }}
+      REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+      JWKS_URI: ${{ secrets.JWKS_URI }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      AWS_REGION: ${{secrets.AWS_REGION}}
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      REFRESH_TOKEN_ISSUER: 'Auth-service'
+      ACCESS_TOKEN_ISSUER: 'Auth-service'
+      REFRESH_TOKEN_EXPIRES_IN: '1y'
+      ACCESS_TOKEN_EXPIRES_IN: '1h'
+      BASE_URL: '/pizza-app/auth-service/api/v1'
+      PORT: 5501
+      NODE_ENV: 'test'
+    steps:
+      - name: action checkout
+        uses: actions/checkout@v4
+      - name: install dependencies
+        run: npm ci
+      - name: Run eslint
+        run: npm run lint
+      - name: Verify Database Connectivity
+        run: |
+          pg_isready -h $DB_HOST -p $DB_PORT -U $DB_USERNAME || exit 1
+          echo "Database is reachable."
+      - name: run tests and coverage
+        run: npm run test
+      - name: Project Build
+        run: npm run build
+  sonar-cloud-scan:
+    name: Sonar Cloud Scan and test
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sonar Cloud Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build-and-push-docker:
     name: Build and Push Docker Image
-    # needs: sonar-cloud-scan
+    needs: sonar-cloud-scan
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: pinnacle731/mern-stack-auth-service # pinnacle731/mern-stack-auth-service:build-2
       IMAGE_TAG: build-${{ github.run_number }}
-    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/developer' || github.ref == 'refs/heads/Productions' || github.ref == 'refs/heads/parth-dev') && github.event_name == 'push'
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/developer' || github.ref == 'refs/heads/Productions') && github.event_name == 'push'
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
