@@ -1,6 +1,5 @@
 import createHttpError from 'http-errors';
 import { AppDataSource } from '../database/data-source';
-import { Roles } from '../types';
 import { DataSource, Repository } from 'typeorm';
 import { User } from '../database/entities/User';
 import { RefreshToken } from '../database/entities/RefreshToken';
@@ -15,19 +14,6 @@ export const isLeapYear = (year: number): number => {
   }
 };
 
-export const mapRoleToPrismaRole = (role: Roles): string => {
-  switch (role) {
-    case Roles.CUSTOMER:
-      return 'customer';
-    case Roles.ADMIN:
-      return 'admin';
-    case Roles.MANAGER:
-      return 'manager';
-    default:
-      throw new Error('Invalid role');
-  }
-};
-
 export const AppDataSourceInitialize = async (): Promise<DataSource> => {
   const dataSource = await AppDataSource();
   if (!dataSource) {
@@ -39,7 +25,10 @@ export const AppDataSourceInitialize = async (): Promise<DataSource> => {
 export const getUserRepository = async (): Promise<Repository<User>> => {
   const dataSource = await AppDataSource();
   if (!dataSource) {
-    throw new Error('DataSource is undefined from getUserRepository');
+    throw createHttpError(
+      500,
+      'DataSource is undefined from getUserRepository',
+    );
   }
   await dataSource.initialize();
   return dataSource.getRepository(User);
@@ -50,7 +39,10 @@ export const getRefreshTokenRepository = async (): Promise<
 > => {
   const dataSource = await AppDataSource();
   if (!dataSource) {
-    throw new Error('DataSource is undefined from getRefreshTokenRepository');
+    throw createHttpError(
+      500,
+      'DataSource is undefined from getRefreshTokenRepository',
+    );
   }
   await dataSource.initialize();
   return dataSource.getRepository(RefreshToken);
@@ -59,7 +51,10 @@ export const getRefreshTokenRepository = async (): Promise<
 export const getTenantRepository = async (): Promise<Repository<Tenant>> => {
   const dataSource = await AppDataSource();
   if (!dataSource) {
-    throw new Error('DataSource is undefined from getTenantRepository');
+    throw createHttpError(
+      500,
+      'DataSource is undefined from getTenantRepository',
+    );
   }
   await dataSource.initialize();
   return dataSource.getRepository(Tenant);

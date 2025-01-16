@@ -69,11 +69,6 @@ export const registerUser = async (
       role: Roles.CUSTOMER,
     });
 
-    if (!user) {
-      res.status(500).json({ error: 'Failed to create user.' });
-      return;
-    }
-
     logger.info('User has been registered', { id: user.id });
 
     const payload: JwtPayload = {
