@@ -43,22 +43,10 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
 
   describe('Given all fields', () => {
     it('should return the 201 status code', async () => {
-      //AAA
-      //Arrange
       const userData = UserInfo();
-      // const userData = {
-      //   firstName: 'Parth',
-      //   lastName: 'Dangroshiya',
-      //   email: 'BxPnM@example.com',
-      //   password: 'Parth@123',
-      //   // role: 'customer',
-      // };
-
-      //Act
       const response = await request(app).post(baseUrl).send(userData);
-
-      //Assert
       expect(response.statusCode).toBe(201);
+      expect(response.body.message).toBe('user created!!');
     });
 
     it('should return valid json response', async () => {
@@ -106,20 +94,10 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
 
     it('should return an id of the created user', async () => {
       const userData = UserInfo();
-      // const userPayload = {
-      //   firstName: 'Parth',
-      //   lastName: 'Dangroshiya',
-      //   email: 'BxPnM@example.com',
-      //   password: 'Parth@123',
-      // };
-
       const response = await request(app).post(baseUrl).send(userData);
-
-      expect(response.status).toBe(201);
-
+      expect(response.statusCode).toBe(201);
       expect(response.body.data.registerUserDto).toHaveProperty('id');
       expect(response.body.data.registerUserDto.id).toBeDefined();
-      expect(response.body.message).toBe('user created!!');
     });
 
     it('should assign a customer role', async () => {
@@ -228,27 +206,17 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
     });
 
     it('should store the refresh token in the database', async () => {
-      // Arrange
       const userData = UserInfo();
-      // const userData = {
-      //   firstName: 'Parth',
-      //   lastName: 'Dangroshiya',
-      //   email: 'BxPnM@example.com',
-      //   password: 'Parth@123',
-      // };
-
-      // Act
       const response = await request(app).post(baseUrl).send(userData);
 
-      // Assert
       const refreshTokenRepo = connection.getRepository(RefreshToken);
-      // const refreshTokens = await refreshTokenRepo.find();
       const tokens = await refreshTokenRepo
         .createQueryBuilder('refreshToken')
         .where('refreshToken.userId = :userId', {
           userId: response.body.data.registerUserDto.id,
         })
         .getMany();
+
       expect(tokens).toHaveLength(1);
     });
   });
