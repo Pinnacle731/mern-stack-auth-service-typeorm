@@ -23,7 +23,7 @@ export const AppDataSource = async (): Promise<DataSource | undefined> => {
       username: configEnv.dbUsername,
       password: configEnv.dbPassword,
       database: configEnv.dbDatabase,
-      synchronize: false,
+      synchronize: true,
       logging: false,
       entities: ['src/database/entities/*.{ts,js}'],
       migrations: ['src/database/migrations/*.{ts,js}'],
