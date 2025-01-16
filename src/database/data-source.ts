@@ -31,11 +31,11 @@ export const AppDataSource = async (): Promise<DataSource | undefined> => {
         configEnv.nodeEnv === 'test'
           ? {
               ca: configEnv.rdsSSL.replace(/\\n/g, '\n'),
-              rejectUnauthorized: true,
+              rejectUnauthorized: false,
             }
           : {
               ca: rdsSSL,
-              rejectUnauthorized: true,
+              rejectUnauthorized: false,
             },
     });
 
