@@ -27,10 +27,16 @@ export const AppDataSource = async (): Promise<DataSource | undefined> => {
       logging: false,
       entities: ['src/database/entities/*.{ts,js}'],
       migrations: ['src/database/migrations/*.{ts,js}'],
-      ssl: {
-        ca: rdsSSL,
-        rejectUnauthorized: false,
-      },
+      ssl:
+        configEnv.nodeEnv === 'test'
+          ? {
+              ca: configEnv.rdsSSL.replace(/\\n/g, '\n'),
+              rejectUnauthorized: false,
+            }
+          : {
+              ca: rdsSSL,
+              rejectUnauthorized: false,
+            },
     });
 
     return dataSource;
