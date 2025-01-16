@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - Productions
+      - developer
 jobs:
   build-and-test:
     name: build and test Project
@@ -53,6 +54,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  # sonar-cloud-scan:
+  #   name: Sonar Cloud Scan and test
+  #   needs: build-and-test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Sonar Cloud Scan
+  #       uses: SonarSource/sonarqube-scan-action@v4
+  #       with:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build-and-push-docker:
     name: Build and Push Docker Image
