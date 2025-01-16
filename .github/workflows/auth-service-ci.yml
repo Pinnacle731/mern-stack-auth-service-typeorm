@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - Productions
-      - developer
 jobs:
   build-and-test:
     name: build and test Project
