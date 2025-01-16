@@ -30,7 +30,7 @@ jobs:
       REFRESH_TOKEN_EXPIRES_IN: '1y'
       ACCESS_TOKEN_EXPIRES_IN: '1h'
       BASE_URL: '/pizza-app/auth-service/api/v1'
-      # PORT: 5501
+      PORT: 5501
       # NODE_ENV: 'test'
     steps:
       - name: action checkout
