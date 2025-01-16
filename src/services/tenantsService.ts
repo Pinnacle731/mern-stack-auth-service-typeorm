@@ -1,6 +1,4 @@
 import createHttpError from 'http-errors';
-import { AppDataSource } from '../database/data-source';
-import { Tenant } from '../database/entities/Tenant';
 import {
   ICreateTenants,
   IGetAllTenantsDto,
@@ -8,11 +6,12 @@ import {
   TenantQueryParams,
 } from '../types/tenantsType';
 import logger from '../config/logger';
+import { getTenantRepository } from '../utils/common';
 
 export const TenantCreateService = async (
   tenantData: ICreateTenants,
 ): Promise<ITenantCreateDto | undefined> => {
-  const tenantRepository = AppDataSource.getRepository(Tenant);
+  const tenantRepository = await getTenantRepository();
   const { name, address } = tenantData;
 
   try {
@@ -52,7 +51,7 @@ export const TenantGetAllService = async (
     }
   | undefined
 > => {
-  const tenantRepository = AppDataSource.getRepository(Tenant);
+  const tenantRepository = await getTenantRepository();
 
   try {
     const queryBuilder = tenantRepository.createQueryBuilder('tenant');
@@ -89,7 +88,9 @@ export const TenantGetByIdService = async (
   tenantId: number,
 ): Promise<IGetAllTenantsDto | undefined> => {
   try {
-    const tenantRepository = AppDataSource.getRepository(Tenant);
+    // sonarqube-ignore-line
+    // const tenantRepository = AppDataSource.getRepository(Tenant);
+    const tenantRepository = await getTenantRepository();
     const tenant = await tenantRepository.findOne({ where: { id: tenantId } });
     if (!tenant) {
       const customError = createHttpError(404, 'Tenant not found');
@@ -111,7 +112,9 @@ export const TenantGetByIdService = async (
 
 export const TenantDeleteService = async (tenantId: number): Promise<void> => {
   try {
-    const tenantRepository = AppDataSource.getRepository(Tenant);
+    // sonarqube-ignore-line
+    // const tenantRepository = AppDataSource.getRepository(Tenant);
+    const tenantRepository = await getTenantRepository();
     await tenantRepository.delete(tenantId);
   } catch (error) {
     if (error instanceof Error) {
@@ -131,7 +134,10 @@ export const TenantUpdateService = async (
   tenantData: ICreateTenants,
 ): Promise<void> => {
   try {
-    await AppDataSource.getRepository(Tenant).update(id, tenantData);
+    // sonarqube-ignore-line
+    // await AppDataSource.getRepository(Tenant).update(id, tenantData);
+    const tenantRepository = await getTenantRepository();
+    tenantRepository.update(id, tenantData);
   } catch (error) {
     if (error instanceof Error) {
       logger.error(error.message);

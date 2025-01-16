@@ -1,9 +1,7 @@
 import createHttpError from 'http-errors';
 import { JwtPayload, sign } from 'jsonwebtoken';
 import { RefreshToken } from '../database/entities/RefreshToken';
-import { isLeapYear } from '../utils/index';
-import { Repository } from 'typeorm';
-import { AppDataSource } from '../database/data-source';
+import { getRefreshTokenRepository, isLeapYear } from '../utils/common';
 import { configEnv } from '../config/config';
 import { UserCreateType } from '../types/auth';
 
@@ -16,7 +14,7 @@ export const generateAccessToken = (payload: JwtPayload): string => {
   }
 
   try {
-    privateKey = configEnv.privatekey;
+    privateKey = configEnv.privatekey.replace(/\\n/g, '\n');
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
@@ -46,8 +44,10 @@ export const persistRefreshToken = async (
   user: UserCreateType,
 ): Promise<RefreshToken> => {
   const MS_IN_YEAR = isLeapYear(new Date().getFullYear());
-  const refreshTokenRepository: Repository<RefreshToken> =
-    AppDataSource.getRepository(RefreshToken);
+  // sonarqube-ignore-line
+  // const refreshTokenRepository: Repository<RefreshToken> =
+  // AppDataSource.getRepository(RefreshToken);
+  const refreshTokenRepository = await getRefreshTokenRepository();
   const newRefreshToken = await refreshTokenRepository.save({
     user: user,
     expiresAt: new Date(Date.now() + MS_IN_YEAR),
@@ -57,7 +57,9 @@ export const persistRefreshToken = async (
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const deleteRefreshToken = async (tokenId: number) => {
-  const refreshTokenRepository: Repository<RefreshToken> =
-    AppDataSource.getRepository(RefreshToken);
+  // sonarqube-ignore-line
+  // const refreshTokenRepository: Repository<RefreshToken> =
+  //   AppDataSource.getRepository(RefreshToken);
+  const refreshTokenRepository = await getRefreshTokenRepository();
   return refreshTokenRepository.delete({ id: tokenId });
 };

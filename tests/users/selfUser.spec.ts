@@ -4,9 +4,9 @@ import { DataSource } from 'typeorm';
 import request from 'supertest';
 import app from '../../src/app';
 import { User } from '../../src/database/entities/User';
-import { AppDataSource } from '../../src/database/data-source';
 import { configEnv } from '../../src/config/config';
 import { Roles } from '../../src/types';
+import { AppDataSourceInitialize } from '../../src/utils/common';
 
 configEnv.baseUrl = 'test-secret';
 describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {
@@ -14,8 +14,10 @@ describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {
   let jwks: ReturnType<typeof createJWKSMock>;
 
   beforeAll(async () => {
-    connection = await AppDataSource.initialize();
     jwks = createJWKSMock('http://localhost:5501');
+    // connection = await AppDataSource.initialize();
+    connection = await AppDataSourceInitialize();
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   });
 
   beforeEach(async () => {
@@ -30,6 +32,7 @@ describe('GET /pizza-app/auth-service/api/v1/auth/self', () => {
 
   afterAll(async () => {
     await connection.close();
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
   });
 
   describe('Given all fields', () => {

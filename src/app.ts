@@ -1,16 +1,10 @@
-import * as dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import express, { Request, Response } from 'express';
 import authRouter from './routes/authRouter';
 import tenantRouter from './routes/tenantRouter';
 import userRouter from './routes/userRouter';
-import path from 'path';
 import { globalErrorHandler } from './middlewares/globalErrorHandler';
 import { configEnv } from './config/config';
-
-dotenv.config({
-  path: path.join(__dirname, `../../.env.${configEnv.nodeEnv || 'dev'}`),
-});
 
 const app = express();
 

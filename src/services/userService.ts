@@ -1,7 +1,6 @@
 import createHttpError from 'http-errors';
 import { User } from '../database/entities/User';
 import bcrypt from 'bcryptjs';
-import { AppDataSource } from '../database/data-source';
 import { saltRounds } from '../constants';
 import {
   LimitedUserData,
@@ -10,6 +9,7 @@ import {
   UserQueryParams,
 } from '../types/auth';
 import { Brackets } from 'typeorm';
+import { getUserRepository } from '../utils/common';
 
 export const CreateUserService = async ({
   userName,
@@ -20,7 +20,9 @@ export const CreateUserService = async ({
   tenantId,
   role,
 }: UserData): Promise<RegisterDataType> => {
-  const userRepository = AppDataSource.getRepository(User);
+  // sonarqube-ignore-line
+  // const userRepository = AppDataSource.getRepository(User);
+  const userRepository = await getUserRepository();
 
   // userName unique
   const uniqueUserName = await userRepository.findOne({
@@ -65,7 +67,9 @@ export const findByEmailWithPasswordService = async (
   email: string,
   userName: string,
 ): Promise<User> => {
-  const userRepository = AppDataSource.getRepository(User);
+  // sonarqube-ignore-line
+  // const userRepository = AppDataSource.getRepository(User);
+  const userRepository = await getUserRepository();
   const user = await userRepository.findOne({
     where: { email: email, userName: userName },
     select: [
@@ -82,19 +86,16 @@ export const findByEmailWithPasswordService = async (
     },
   });
   if (!user) {
-    const error = createHttpError(
-      400,
-      'Username or Email or Password does not match!',
-    );
+    const error = createHttpError(404, 'user does not exist!');
     throw error;
   }
   return user;
 };
 
 export const findByIdService = async (id: number): Promise<User | null> => {
+  // sonarqube-ignore-line
   // const userRepository = AppDataSource.getRepository(User);
-
-  const userRepository = AppDataSource.getRepository(User);
+  const userRepository = await getUserRepository();
 
   const user = await userRepository
     .createQueryBuilder('user')
@@ -110,7 +111,9 @@ export const updateUserService = async (
   { userName, firstName, lastName, role, email, tenantId }: LimitedUserData,
 ): Promise<void> => {
   try {
-    const userRepository = AppDataSource.getRepository(User);
+    // sonarqube-ignore-line
+    // const userRepository = AppDataSource.getRepository(User);
+    const userRepository = await getUserRepository();
     await userRepository.update(userId, {
       userName,
       firstName,
@@ -138,7 +141,9 @@ export const getAllUsersService = async (
   count: number;
 }> => {
   try {
-    const userRepository = AppDataSource.getRepository(User);
+    // sonarqube-ignore-line
+    // const userRepository = AppDataSource.getRepository(User);
+    const userRepository = await getUserRepository();
     const queryBuilder = userRepository.createQueryBuilder('user');
 
     if (validatedQuery.q) {
@@ -177,7 +182,10 @@ export const getAllUsersService = async (
 
 export const deleteByIdService = async (userId: number): Promise<void> => {
   try {
-    await AppDataSource.getRepository(User).delete(userId);
+    // sonarqube-ignore-line
+    // await AppDataSource.getRepository(User).delete(userId);
+    const userRepository = await getUserRepository();
+    await userRepository.delete(userId);
   } catch (error) {
     if (error instanceof Error) {
       throw createHttpError(500, error.message);

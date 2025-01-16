@@ -3,9 +3,9 @@ import bcrypt from 'bcryptjs';
 import request from 'supertest';
 import app from '../../src/app';
 import { isJwt } from '../utils';
-import { AppDataSource } from '../../src/database/data-source';
 import { User } from '../../src/database/entities/User';
 import { Roles } from '../../src/types';
+import { AppDataSourceInitialize } from '../../src/utils/common';
 
 describe('POST /pizza-app/auth-service/api/v1/auth/login', () => {
   let connection: DataSource;
@@ -23,7 +23,8 @@ describe('POST /pizza-app/auth-service/api/v1/auth/login', () => {
   };
 
   beforeAll(async () => {
-    connection = await AppDataSource.initialize();
+    // connection = await AppDataSource.initialize();
+    connection = await AppDataSourceInitialize();
   });
 
   beforeEach(async () => {
@@ -197,6 +198,6 @@ describe('POST /pizza-app/auth-service/api/v1/auth/login', () => {
 
     // Assert
     expect(responsePassword.statusCode).toBe(400);
-    expect(responseUsername.statusCode).toBe(400);
+    expect(responseUsername.statusCode).toBe(404);
   });
 });

@@ -57,6 +57,8 @@ export const registerUser = async (
     email,
     password: '******',
   });
+
+  logger.info('register function calling');
   try {
     const user = await CreateUserService({
       userName,

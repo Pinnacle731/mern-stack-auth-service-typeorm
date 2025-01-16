@@ -1,41 +1,45 @@
-# Use the official Node.js 22.12.0 Alpine image as the base image for the build stage
+# Stage 1: Build
 FROM node:22.12.0-alpine as builder
 
-# Set the working directory inside the container
-WORKDIR /my-auth-service
+# Set the working directory
+WORKDIR /auth-app
 
-# Copy package.json and package-lock.json to the working directory
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies using npm in a clean and deterministic way (ci = clean install)
+# Install dependencies
 RUN npm ci
 
-# Copy the rest of the application files into the container
+# Copy the source code
 COPY . .
 
-# Build the application (e.g., TypeScript compilation, bundling, etc.)
+# Build the TypeScript code
 RUN npm run build
 
-# Use a separate lightweight Node.js 22.12.0 Alpine image for the production stage
+# Stage 2: Production
 FROM node:22.12.0-alpine as production
 
-# Set the working directory inside the container
-WORKDIR /my-auth-service
+# Set environment to production
+ENV NODE_ENV=prod
 
-# Set the Node.js environment to "production" for performance optimizations
-ENV NODE_ENV=production
+# Set the working directory
+WORKDIR /auth-app
 
-# Copy package.json and package-lock.json to the working directory
+# Copy package.json and package-lock.json for production dependencies
 COPY package*.json ./
 
-# Install production-only dependencies, ignoring scripts to avoid unnecessary steps
+# Install production dependencies
 RUN npm ci --ignore-scripts
 
-# Copy the built files from the "builder" stage to the current working directory
-COPY --from=builder /my-auth-service/dist ./
+# Copy the build output from the builder stage
+COPY --from=builder /auth-app/dist ./
 
-# Expose the application port (5500) to allow external access
-EXPOSE 5500
+# Expose the application port
+EXPOSE 5501
 
-# Specify the command to run the application when the container starts
+# # Set environment variables
+# ENV PORT=5501
+ENV NODE_ENV=prod
+
+# Default command
 CMD [ "node", "src/server.js" ]

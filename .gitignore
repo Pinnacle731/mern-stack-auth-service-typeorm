@@ -136,3 +136,5 @@ dist
 # custom
 logs
 certs/
+rds-ssl/
+.vscode
