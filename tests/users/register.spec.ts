@@ -7,6 +7,7 @@ import { User } from '../../src/database/entities/User';
 import { RefreshToken } from '../../src/database/entities/RefreshToken';
 import { Roles } from '../../src/types';
 import { AppDataSourceInitialize } from '../../src/utils/common';
+import { configEnv } from '../../src/config/config';
 // import { truncateTable } from '../utils';
 
 describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
@@ -45,6 +46,7 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
     it('should return the 201 status code', async () => {
       const userData = UserInfo();
       const response = await request(app).post(baseUrl).send(userData);
+      console.log(configEnv.privatekey.replace(/\\n/g, '\n'));
       console.log(response.body);
       console.log(response.statusCode);
       expect(response.statusCode).toBe(201);

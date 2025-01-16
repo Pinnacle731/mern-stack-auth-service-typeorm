@@ -14,7 +14,7 @@ export const generateAccessToken = (payload: JwtPayload): string => {
   }
 
   try {
-    privateKey = configEnv.privatekey;
+    privateKey = configEnv.privatekey.replace(/\\n/g, '\n');
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
