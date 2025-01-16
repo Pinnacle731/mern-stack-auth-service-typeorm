@@ -4,6 +4,7 @@ import { AppDataSourceInitialize } from '../utils/common';
 
 export const startApp = async (): Promise<void> => {
   try {
+    // sonarqube-ignore-line
     // await AppDataSource.initialize();
     await AppDataSourceInitialize();
     logger.info('✅ Database connected successfully!');

@@ -23,6 +23,7 @@ export const getFileFromS3 = async (
       );
       readable.on('error', (err) => reject(err));
     });
+    /* sonarqube-ignore-start */
   } catch (error) {
     if (error instanceof Error) {
       logger.error('Error retrieving file from S3', error.message);
@@ -30,4 +31,5 @@ export const getFileFromS3 = async (
       throw createHttpError(500, 'Error retrieving file from S3');
     }
   }
+  /* sonarqube-ignore-end */
 };

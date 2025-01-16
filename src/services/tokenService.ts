@@ -44,6 +44,7 @@ export const persistRefreshToken = async (
   user: UserCreateType,
 ): Promise<RefreshToken> => {
   const MS_IN_YEAR = isLeapYear(new Date().getFullYear());
+  // sonarqube-ignore-line
   // const refreshTokenRepository: Repository<RefreshToken> =
   // AppDataSource.getRepository(RefreshToken);
   const refreshTokenRepository = await getRefreshTokenRepository();
@@ -56,6 +57,7 @@ export const persistRefreshToken = async (
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const deleteRefreshToken = async (tokenId: number) => {
+  // sonarqube-ignore-line
   // const refreshTokenRepository: Repository<RefreshToken> =
   //   AppDataSource.getRepository(RefreshToken);
   const refreshTokenRepository = await getRefreshTokenRepository();

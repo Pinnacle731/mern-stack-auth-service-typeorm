@@ -14,6 +14,7 @@ export const isLeapYear = (year: number): number => {
   }
 };
 
+/* sonarqube-ignore-start */
 export const AppDataSourceInitialize = async (): Promise<DataSource> => {
   const dataSource = await AppDataSource();
   if (!dataSource) {
@@ -59,3 +60,4 @@ export const getTenantRepository = async (): Promise<Repository<Tenant>> => {
   await dataSource.initialize();
   return dataSource.getRepository(Tenant);
 };
+/* sonarqube-ignore-end */

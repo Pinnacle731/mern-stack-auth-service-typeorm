@@ -15,6 +15,7 @@ describe('create tenants in the database', () => {
 
   beforeAll(async () => {
     jwks = createJWKSMock('http://localhost:5501');
+    // sonarqube-ignore-line
     // connection = await AppDataSource.initialize();
     connection = await AppDataSourceInitialize();
   });

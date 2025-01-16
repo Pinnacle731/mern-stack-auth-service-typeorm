@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-// import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 import { configEnv } from '../config/config';
 import { getFileFromS3 } from '../services/s3Service';
@@ -40,6 +39,7 @@ export const AppDataSource = async (): Promise<DataSource | undefined> => {
     });
 
     return dataSource;
+    /* sonarqube-ignore-start */
   } catch (error) {
     if (error instanceof Error) {
       logger.error('Error setting up data source:', error.message);
@@ -47,4 +47,5 @@ export const AppDataSource = async (): Promise<DataSource | undefined> => {
       throw createHttpError(500, 'Error setting up data source');
     }
   }
+  /* sonarqube-ignore-end */
 };

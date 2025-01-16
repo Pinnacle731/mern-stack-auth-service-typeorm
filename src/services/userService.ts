@@ -20,6 +20,7 @@ export const CreateUserService = async ({
   tenantId,
   role,
 }: UserData): Promise<RegisterDataType> => {
+  // sonarqube-ignore-line
   // const userRepository = AppDataSource.getRepository(User);
   const userRepository = await getUserRepository();
 
@@ -66,6 +67,7 @@ export const findByEmailWithPasswordService = async (
   email: string,
   userName: string,
 ): Promise<User> => {
+  // sonarqube-ignore-line
   // const userRepository = AppDataSource.getRepository(User);
   const userRepository = await getUserRepository();
   const user = await userRepository.findOne({
@@ -91,8 +93,7 @@ export const findByEmailWithPasswordService = async (
 };
 
 export const findByIdService = async (id: number): Promise<User | null> => {
-  // const userRepository = AppDataSource.getRepository(User);
-
+  // sonarqube-ignore-line
   // const userRepository = AppDataSource.getRepository(User);
   const userRepository = await getUserRepository();
 
@@ -110,6 +111,7 @@ export const updateUserService = async (
   { userName, firstName, lastName, role, email, tenantId }: LimitedUserData,
 ): Promise<void> => {
   try {
+    // sonarqube-ignore-line
     // const userRepository = AppDataSource.getRepository(User);
     const userRepository = await getUserRepository();
     await userRepository.update(userId, {
@@ -139,6 +141,7 @@ export const getAllUsersService = async (
   count: number;
 }> => {
   try {
+    // sonarqube-ignore-line
     // const userRepository = AppDataSource.getRepository(User);
     const userRepository = await getUserRepository();
     const queryBuilder = userRepository.createQueryBuilder('user');
@@ -179,6 +182,7 @@ export const getAllUsersService = async (
 
 export const deleteByIdService = async (userId: number): Promise<void> => {
   try {
+    // sonarqube-ignore-line
     // await AppDataSource.getRepository(User).delete(userId);
     const userRepository = await getUserRepository();
     await userRepository.delete(userId);

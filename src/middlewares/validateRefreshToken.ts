@@ -32,7 +32,6 @@ export default expressjwt({
         }
         */
     try {
-      // const refreshTokenRepository = AppDataSource.getRepository(RefreshToken);
       const refreshTokenRepository = await getRefreshTokenRepository();
       const refreshToken = await refreshTokenRepository.findOne({
         where: {

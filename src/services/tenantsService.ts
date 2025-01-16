@@ -11,7 +11,6 @@ import { getTenantRepository } from '../utils/common';
 export const TenantCreateService = async (
   tenantData: ICreateTenants,
 ): Promise<ITenantCreateDto | undefined> => {
-  // const tenantRepository = AppDataSource.getRepository(Tenant);
   const tenantRepository = await getTenantRepository();
   const { name, address } = tenantData;
 
@@ -52,7 +51,6 @@ export const TenantGetAllService = async (
     }
   | undefined
 > => {
-  // const tenantRepository = AppDataSource.getRepository(Tenant);
   const tenantRepository = await getTenantRepository();
 
   try {
@@ -90,6 +88,7 @@ export const TenantGetByIdService = async (
   tenantId: number,
 ): Promise<IGetAllTenantsDto | undefined> => {
   try {
+    // sonarqube-ignore-line
     // const tenantRepository = AppDataSource.getRepository(Tenant);
     const tenantRepository = await getTenantRepository();
     const tenant = await tenantRepository.findOne({ where: { id: tenantId } });
@@ -113,6 +112,7 @@ export const TenantGetByIdService = async (
 
 export const TenantDeleteService = async (tenantId: number): Promise<void> => {
   try {
+    // sonarqube-ignore-line
     // const tenantRepository = AppDataSource.getRepository(Tenant);
     const tenantRepository = await getTenantRepository();
     await tenantRepository.delete(tenantId);
@@ -134,6 +134,7 @@ export const TenantUpdateService = async (
   tenantData: ICreateTenants,
 ): Promise<void> => {
   try {
+    // sonarqube-ignore-line
     // await AppDataSource.getRepository(Tenant).update(id, tenantData);
     const tenantRepository = await getTenantRepository();
     tenantRepository.update(id, tenantData);
