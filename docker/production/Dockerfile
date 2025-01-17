@@ -32,11 +32,10 @@ COPY package*.json ./
 RUN npm ci --ignore-scripts
 
 # Copy the build output from the builder stage
-# COPY --from=builder /auth-app/dist ./
-COPY --from=builder /auth-app/dist ./dist
+COPY --from=builder /auth-app/dist ./
 
 # Copy the .env.prod file to the root of the project
-COPY .env.prod ./
+# COPY .env.prod ./
 
 # Expose the application port
 EXPOSE 5501
@@ -46,5 +45,4 @@ EXPOSE 5501
 ENV NODE_ENV=prod
 
 # Default command
-# CMD [ "node", "src/server.js" ]
-CMD [ "node", "dist/server.js" ]
+CMD [ "node", "src/server.js" ]
