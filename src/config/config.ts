@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import * as dotenv from 'dotenv';
 import path from 'path';
 import { NODE_ENV_VAL } from '../constants';
@@ -11,8 +10,6 @@ dotenv.config({
     `../../.env.${process.env.NODE_ENV ?? nodeENV}`,
   ),
 });
-
-console.log('my host =>', process.env.DB_HOST);
 
 interface Config {
   port: number;

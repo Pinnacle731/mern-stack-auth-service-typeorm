@@ -37,8 +37,6 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
   describe('Successful Registration', () => {
     it('should create a new user and return 201 status code', async () => {
       const response = await request(app).post(baseUrl).send(mockUser);
-      // eslint-disable-next-line no-console
-      console.log(response.body);
       expect(response.statusCode).toBe(201);
       expect(response.body.message).toBe('user created!!');
       expect(response.body.data.registerUserDto).toHaveProperty('id');
