@@ -12,15 +12,6 @@ dotenv.config({
   ),
 });
 
-console.log('NODE_ENV =>', process.env.NODE_ENV, 'PORT => ', process.env.PORT);
-
-console.log('current Path', path.resolve(__dirname));
-
-console.log(
-  'folder ENV Path',
-  path.resolve(__dirname, `../../.env.${process.env.NODE_ENV ?? 'dev'}`),
-);
-
 console.log('my host =>', process.env.DB_HOST);
 
 interface Config {
