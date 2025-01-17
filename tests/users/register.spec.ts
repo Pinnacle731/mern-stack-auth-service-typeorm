@@ -7,7 +7,6 @@ import { RefreshToken } from '../../src/database/entities/RefreshToken';
 import { Roles } from '../../src/types';
 import { AppDataSourceInitialize } from '../../src/utils/common';
 import { generateAccessToken } from '../../src/services/tokenService';
-import { getFileFromS3 } from '../../src/services/s3Service';
 import { JwtPayload } from 'jsonwebtoken';
 import createHttpError from 'http-errors';
 import { configEnv } from '../../src/config/config';
