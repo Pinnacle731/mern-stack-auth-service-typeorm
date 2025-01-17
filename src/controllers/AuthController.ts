@@ -81,7 +81,7 @@ export const registerUser = async (
       tenant: user.tenant ? String(user.tenant.id) : '',
     };
 
-    const accessToken = generateAccessToken(payload);
+    const accessToken = await generateAccessToken(payload);
 
     //persist refresh token
     const newRefreshToken = await persistRefreshToken(user);
@@ -158,7 +158,7 @@ export const loginUser = async (
       tenant: existUser.tenant ? String(existUser.tenant.id) : '',
     };
 
-    const accessToken = generateAccessToken(payload);
+    const accessToken = await generateAccessToken(payload);
 
     //persist refresh token
     const newRefreshToken = await persistRefreshToken(existUser);
@@ -229,7 +229,7 @@ export const refresh = async (
       sub: req.auth.sub,
       role: req.auth.role,
     };
-    const accessToken = generateAccessToken(payload);
+    const accessToken = await generateAccessToken(payload);
 
     const existUserName = await findByIdService(Number(req.auth.sub));
     if (!existUserName) {

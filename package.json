@@ -7,7 +7,7 @@
     "test:watch": "jest --passWithNoTests --watch --coverage --all --runInBand",
     "test": "jest --no-cache --coverage --all --runInBand",
     "build": "tsc",
-    "start": "tsc && ts-node dist/server.js",
+    "start": "ts-node dist/server.js",
     "dev": "nodemon --legacy-watch src/server.ts",
     "typeorm": "npm run build && npx typeorm-ts-node-esm -d dist/database/data-source.js",
     "migration:show": "npm run typeorm migration:show",

@@ -4,30 +4,55 @@ import { RefreshToken } from '../database/entities/RefreshToken';
 import { getRefreshTokenRepository, isLeapYear } from '../utils/common';
 import { configEnv } from '../config/config';
 import { UserCreateType } from '../types/auth';
+import { getFileFromS3 } from './s3Service';
+import { NODE_ENV_VAL } from '../constants';
 
-export const generateAccessToken = (payload: JwtPayload): string => {
-  let privateKey: string;
+export const generateAccessToken = async (
+  payload: JwtPayload,
+): Promise<string> => {
+  let privateKey: string | undefined;
 
-  if (!configEnv.privatekey) {
-    const error = createHttpError(500, 'Private key not found');
-    throw error;
+  try {
+    if (configEnv.nodeEnv !== NODE_ENV_VAL.TEST) {
+      // Fetch the private key from S3
+      const bucketName = configEnv.awsS3BucketName;
+      const key = 'auth-service/private.pem';
+
+      if (!bucketName || !key) {
+        throw createHttpError(500, 'S3 bucket name or key not provided');
+      }
+
+      privateKey = await getFileFromS3(bucketName, key);
+
+      if (!privateKey) {
+        throw createHttpError(500, 'Private key not found in S3');
+      }
+    } else if (configEnv.privatekey) {
+      privateKey = configEnv.privatekey.replace(/\\n/g, '\n');
+    } else {
+      throw createHttpError(500, 'Private key not found in configuration');
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      throw createHttpError(
+        500,
+        `Error while reading private key: ${err.message}`,
+      );
+    }
+    throw createHttpError(500, 'Error while reading private key');
   }
 
   try {
-    privateKey = configEnv.privatekey.replace(/\\n/g, '\n');
-
+    const accessToken = sign(payload, privateKey, {
+      algorithm: 'RS256',
+      expiresIn: String(configEnv.accessTokenExpiresIn),
+      issuer: String(configEnv.accessTokenIssuer),
+    });
+    return accessToken;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
-    const error = createHttpError(500, 'Error while reading private key');
-    throw error;
+    throw createHttpError(500, 'Error generating access token');
   }
-
-  const accessToken = sign(payload, privateKey, {
-    algorithm: 'RS256',
-    expiresIn: String(configEnv.accessTokenExpiresIn),
-    issuer: String(configEnv.accessTokenIssuer),
-  });
-  return accessToken;
 };
 
 export const generateRefreshToken = (payload: JwtPayload): string => {
