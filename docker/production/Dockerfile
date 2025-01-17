@@ -13,6 +13,9 @@ RUN npm ci
 # Copy the source code
 COPY . .
 
+# Copy the environment file
+COPY .env.prod /auth-app/.env.prod
+
 # Build the TypeScript code
 RUN npm run build
 
@@ -34,8 +37,8 @@ RUN npm ci --ignore-scripts
 # Copy the build output from the builder stage
 COPY --from=builder /auth-app/dist ./
 
-# Copy the .env.prod file to the root of the project
-# COPY .env.prod ./
+# Copy the .env.prod file from the builder stage
+COPY --from=builder /auth-app/.env.prod ./
 
 # Expose the application port
 EXPOSE 5501
