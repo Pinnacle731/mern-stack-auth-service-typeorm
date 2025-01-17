@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import path from 'path';
 import { NODE_ENV_VAL } from '../constants';
 
-const nodeENV: string = NODE_ENV_VAL.DEVELOPMENT;
+const nodeENV: string = NODE_ENV_VAL.PRODUCTION;
 
 dotenv.config({
   path: path.resolve(
@@ -10,6 +10,17 @@ dotenv.config({
     `../../.env.${process.env.NODE_ENV ?? nodeENV}`,
   ),
 });
+
+console.log('NODE_ENV =>', process.env.NODE_ENV, 'PORT => ', process.env.PORT);
+
+console.log('current Path', path.resolve(__dirname));
+
+console.log(
+  'folder ENV Path',
+  path.resolve(__dirname, `../../.env.${process.env.NODE_ENV ?? nodeENV}`),
+);
+
+console.log('my host =>', process.env.DB_HOST);
 
 interface Config {
   port: number;

@@ -9,7 +9,7 @@
     "build": "tsc",
     "start": "ts-node dist/server.js",
     "dev": "nodemon --legacy-watch src/server.ts",
-    "typeorm": "npm run build && npx typeorm-ts-node-esm -d dist/database/data-source.js",
+    "typeorm": "npm run build && npx typeorm-ts-node-esm -d dist/database/datasourcemigration.js",
     "migration:show": "npm run typeorm migration:show",
     "migration:create": "typeorm-ts-node-commonjs migration:create",
     "migration:revert": "typeorm-ts-node-commonjs migration:revert",
