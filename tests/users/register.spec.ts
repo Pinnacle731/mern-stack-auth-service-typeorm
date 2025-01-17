@@ -6,8 +6,17 @@ import { User } from '../../src/database/entities/User';
 import { RefreshToken } from '../../src/database/entities/RefreshToken';
 import { Roles } from '../../src/types';
 import { AppDataSourceInitialize } from '../../src/utils/common';
+import { generateAccessToken } from '../../src/services/tokenService';
+import { getFileFromS3 } from '../../src/services/s3Service';
+import { JwtPayload } from 'jsonwebtoken';
+import createHttpError from 'http-errors';
+import { configEnv } from '../../src/config/config';
 
 jest.setTimeout(20000); // Reduce test timeout for optimization
+
+jest.mock('../../src/services/s3Service', () => ({
+  getFileFromS3: jest.fn(),
+}));
 
 describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
   let connection: DataSource;
@@ -32,6 +41,9 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
 
   afterAll(async () => {
     await connection.destroy();
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('Successful Registration', () => {
@@ -149,6 +161,50 @@ describe('POST /pizza-app/auth-service/api/v1/auth/register', () => {
         email: 'BxPnM@example.com',
       });
       expect(user).toBeDefined();
+    });
+  });
+
+  describe('generateAccessToken', () => {
+    const mockPayload: JwtPayload = {
+      sub: '1',
+      role: 'CUSTOMER',
+      userName: 'parth731',
+      firstName: 'Parth',
+      lastName: 'Dangroshiya',
+      email: 'BxPnM@example.com',
+      password: 'Parth@123',
+      tenant: '',
+    };
+
+    it('should generate a valid JWT when provided a valid payload', async () => {
+      const token = await generateAccessToken(mockPayload);
+      expect(token).toBeDefined();
+      expect(typeof token).toBe('string');
+    });
+
+    it('should throw an error if private key is missing', async () => {
+      // Backup the original private key
+      const originalPrivateKey = configEnv.privatekey;
+
+      // Set the private key to undefined
+      configEnv.privatekey = '';
+      await expect(generateAccessToken(mockPayload)).rejects.toThrow(
+        createHttpError(500, 'Private key not found in configuration'),
+      );
+      // Restore the original private key after the test
+      configEnv.privatekey = originalPrivateKey;
+    });
+
+    it('should throw an error if S3 bucket details are invalid in non-test environments', async () => {
+      const nodeENV = 'prod';
+      const awsS3BucketName = 'mern-stack-service-bucket';
+      configEnv.nodeEnv = 'prod';
+      configEnv.awsS3BucketName = '';
+      await expect(generateAccessToken(mockPayload)).rejects.toThrow(
+        createHttpError(500, 'S3 bucket name or key not provided'),
+      );
+      configEnv.nodeEnv = nodeENV;
+      configEnv.awsS3BucketName = awsS3BucketName;
     });
   });
 });

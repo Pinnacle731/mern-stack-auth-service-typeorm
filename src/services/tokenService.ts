@@ -34,10 +34,7 @@ export const generateAccessToken = async (
     }
   } catch (err) {
     if (err instanceof Error) {
-      throw createHttpError(
-        500,
-        `Error while reading private key: ${err.message}`,
-      );
+      throw createHttpError(500, `${err.message}`);
     }
     throw createHttpError(500, 'Error while reading private key');
   }
