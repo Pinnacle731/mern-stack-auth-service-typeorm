@@ -1,9 +1,15 @@
 /* eslint-disable no-console */
 import * as dotenv from 'dotenv';
 import path from 'path';
+import { NODE_ENV_VAL } from '../constants';
+
+const nodeENV: string = NODE_ENV_VAL.DEVELOPMENT;
 
 dotenv.config({
-  path: path.resolve(__dirname, `../../.env.${process.env.NODE_ENV ?? 'dev'}`),
+  path: path.resolve(
+    __dirname,
+    `../../.env.${process.env.NODE_ENV ?? nodeENV}`,
+  ),
 });
 
 console.log('NODE_ENV =>', process.env.NODE_ENV, 'PORT => ', process.env.PORT);

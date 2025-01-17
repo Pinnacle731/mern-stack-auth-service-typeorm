@@ -4,6 +4,7 @@ import { configEnv } from '../config/config';
 import { getFileFromS3 } from '../services/s3Service';
 import logger from '../config/logger';
 import createHttpError from 'http-errors';
+import { NODE_ENV_VAL } from '../constants';
 
 export const AppDataSource = async (): Promise<DataSource | undefined> => {
   logger.info('database app datasource calling');
@@ -24,17 +25,23 @@ export const AppDataSource = async (): Promise<DataSource | undefined> => {
       database: configEnv.dbDatabase,
       synchronize: false,
       logging: false,
-      entities: ['src/database/entities/*.{ts,js}'],
-      migrations: ['src/database/migrations/*.{ts,js}'],
+      entities:
+        configEnv.nodeEnv === 'prod'
+          ? ['dist/database/entities/*.{ts,js}']
+          : ['src/database/entities/*.{ts,js}'],
+      migrations:
+        configEnv.nodeEnv === 'prod'
+          ? ['dist/database/migrations/*.{ts,js}']
+          : ['src/database/migrations/*.{ts,js}'],
       ssl:
-        configEnv.nodeEnv === 'test'
+        configEnv.nodeEnv === NODE_ENV_VAL.TEST
           ? {
               ca: configEnv.rdsSSL.replace(/\\n/g, '\n'),
               rejectUnauthorized: false,
             }
           : {
               ca: rdsSSL,
-              rejectUnauthorized: false,
+              rejectUnauthorized: true,
             },
     });
 
