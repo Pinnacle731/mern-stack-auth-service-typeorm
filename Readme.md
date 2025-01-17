@@ -26,6 +26,8 @@
 
 - docker run -p 5503:5503 --name my-auth-service-container my-auth-service:latest
 
+- docker run -p 5503:5503 --env-file "${PWD}/.env.prod" --name my-auth-service-container-prod pinnacle731/mern-stack-auth-service-prod:build-74
+
 ```javascript
 console.log('NODE_ENV =>', process.env.NODE_ENV, 'PORT => ', process.env.PORT);
 
